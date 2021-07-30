@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>edit</title>
+</head>
+<body>
+    <form action="/editrecord" method="POST">
+        <input type="text" name="name" id="name" required><br>
+        <select name="modify" id="modify">
+            <option value="contact">contact</option>
+            <option value="subjects">subjects</option>
+            <option value="class">class</option>
+            <option value="society">society</option>
+            <option value="years">years</option>
+        </select>
+        <input type="text" name="change" id="change">
+        <input type="submit" value="submit"><br>
+        </form>
+</body>
+<script>
+select = document.getElementById('modify')
+select.addEventListener('change',(e)=>{
+    if(select.value === "years"){
+        document.getElementById('change').type = 'date'
+    }else{
+        document.getElementById('change').type = 'text'
+    }
+})
+</script>
+</html>

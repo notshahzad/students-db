@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>create</title>
+</head>
+<body>
+    <form action="/addrecord" method="post">
+    <input type="text" name="name" id="name" required><br>
+    <input type="text" name="contact" id="contact" required><br>
+    <input type="text" name="subjects" id="subjects" required ><input type="button" onclick='subvalueadd()' value="add"><br>
+    <input type="text" name="class" id="class" required><br>
+    <input type="text" name="society" id="society"><input type="button" onclick='socvalueadd()' value="add"><br>
+    <input type="date" name="year" id="years"><br>
+    <input type="submit" onclick="undo()" value="submit"><br>
+    </form>
+</body>
+<script>
+    var sub_temp = [];
+    var soc_temp = [];
+    function subvalueadd(){
+        arr = document.getElementById('subjects').value;
+        sub_temp.push(arr);
+        document.getElementById('subjects').value = null;
+    }
+    function socvalueadd(){
+        arr = document.getElementById('society').value;
+        soc_temp.push(arr);
+        document.getElementById('society').value = null;
+    }
+    function undo(){
+        document.getElementById('subjects').value += sub_temp
+        document.getElementById('society').value += soc_temp
+    }
+</script>
+</html>

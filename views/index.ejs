@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>view</title>
-</head>
-<body>
+  </head>
+  <body>
+    <p>
+      go to /register to register /delete to delete records /edit to edit
+      records
+    </p>
     <table>
-        <tr>
-            <td>name</td>
-            <td>contacts</td>
-            <td>subjects</td>
-            <td>class</td>
-            <td>society</td>
-            <td>year </td>
-        </tr>
-        <% for(var i=0; i < data.length; i++) { %>
-           <tr>
-             <td><%= data[i].name %></td>
-             <td><%= data[i].contact%></td>
-             <td><%= data[i].subjects%></td>
-             <td><%= data[i].class %></td>
-             <td><%= data[i].society %></td>
-             <td><%= data[i].year %></td>
-           </tr>
-        <% } %>
-        </table>
-</body>
+      <tr>
+        <td>name</td>
+        <td>contacts</td>
+        <td>subjects</td>
+        <td>class</td>
+        <td>society</td>
+        <td>year</td>
+      </tr>
+      <% for(var i=0; i < data.length; i++) { %>
+      <tr>
+        <td><%= data[i].name %></td>
+        <td><%= data[i].contact%></td>
+        <td><%= data[i].subjects%></td>
+        <td><%= data[i]['classes'].class %></td>
+        <td><%= data[i]['classes']['Societies'].society %></td>
+        <td><%= data[i].year %></td>
+      </tr>
+      <% } %>
+    </table>
+  </body>
 </html>

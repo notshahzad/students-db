@@ -8,7 +8,9 @@ app.use(express.static(`${__dirname}/views/`));
 var conn = mongoose.connection;
 
 const PORT = 3000 || process.env.PORT;
-const student = require("./model/schema");
+const studentModel = require("./model/student");
+const classModel = require("./model/class");
+const societyModel = require("./model/society");
 mongoose
   .connect("mongodb://localhost:27017/students-db", {
     useNewUrlParser: true,
@@ -18,14 +20,20 @@ mongoose
     console.log("connected");
   });
 app.get("/", (req, res) => {
-  student.find((err, data) => {
-    res.render("index", { data: data });
-  });
+  studentModel
+    .find()
+    .populate({
+      path: "classes",
+      populate: { path: "Societies", model: "society" },
+    })
+    .then((data) => res.render("index", { data: data }))
+    .catch((err) => console.log(err));
 });
-app.get("/create", (req, res) => {
+app.get("/register", (req, res) => {
   res.render("makerecords");
 });
 app.get("/deleteall", (req, res) => {
+  conn.collection("students").deleteMany();
   res.redirect("/create");
 });
 app.get("/edit", (req, res) => {
@@ -36,27 +44,35 @@ app.get("/delete", (req, res) => {
 });
 app.post("/delete", (req, res) => {
   console.log(req.body.name);
+
   conn.collection("students").deleteOne({ name: req.body.name });
   res.redirect("/");
 });
 app.post("/addrecord", (req, res) => {
-  var studentmodel = new student();
   str_sub = req.body.subjects;
   subjects_arr = str_sub.split(",");
   str_soc = req.body.society;
   society_arr = str_soc.split(",");
-  console.log(typeof req.body.subjects);
-  studentmodel.name = req.body.name;
-  studentmodel.contact = req.body.contact;
-  studentmodel.subjects = subjects_arr;
-  studentmodel.class = req.body.class;
-  studentmodel.society = society_arr;
-  studentmodel.year = req.body.year;
-  try {
-    conn.collection("students").insertOne(studentmodel);
-  } catch (err) {
-    console.log(err);
-  }
+  var StudentModel = new studentModel({
+    name: req.body.name,
+    contact: req.body.contact,
+    year: req.body.year,
+    subjects: subjects_arr,
+  });
+  var ClassModel = new classModel({
+    class: req.body.class,
+  });
+  var SocietyModel = new societyModel({
+    society: society_arr,
+  });
+  ClassModel.Societies = SocietyModel._id;
+  StudentModel.classes = ClassModel._id;
+  StudentModel.save();
+  console.log(StudentModel);
+  console.log(ClassModel);
+  console.log(SocietyModel);
+  ClassModel.save();
+  SocietyModel.save();
   res.redirect("/");
 });
 app.post("/editrecord", (req, res) => {
@@ -74,12 +90,3 @@ app.post("/editrecord", (req, res) => {
 app.listen(PORT, () => {
   console.log(`listening on ${PORT}`);
 });
-/*var studentmodel = new student();
-studentmodel.name = "shahzad";
-studentmodel.contact = "1234";
-var conn = mongoose.connection;
-conn.collection("students").insertOne(studentmodel);
-student.find((err, data) => {
-  console.log(data);
-});
- */

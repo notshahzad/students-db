@@ -14,11 +14,7 @@ var student_schema = new mongoose.Schema({
     type: Array,
     required: "required",
   },
-  class: {
-    type: String,
-    required: "required",
-  },
-  society: Array,
+  classes: { type: mongoose.Types.ObjectId, ref: "class" },
   year: { type: Date, required: "required" },
 });
 const student = mongoose.model("students", student_schema);
